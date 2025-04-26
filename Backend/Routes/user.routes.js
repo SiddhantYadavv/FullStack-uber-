@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import express from "express"
 import {body} from "express-validator"
 import userController from "../Controllers/user.Controller.js"
+import { authUser } from "../Middlewares/auth.middleware.js";
 
 const router=express.Router()
 
@@ -15,6 +16,10 @@ router.post("/login", [
     body("email").isEmail().withMessage("Invalid Email").normalizeEmail(),
     body("password").isLength({ min: 8 }).withMessage("Password must be at least 8 characters long")
 ],userController.loginUser)
+
+router.get("/profile", authUser ,userController.getUserProfile)
+
+router.get("/logout", authUser ,userController.logoutUser)
 
 
 export  {router as UserRouter}
