@@ -7,22 +7,27 @@ import { blackListTokenModel } from "../Models/blackList.model.js";
 
 
 const registerUser = async (req, res, next) => {
-   const errors = validationResult(req)
-   if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
+   try {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+         return res.status(400).json({ errors: errors.array() })
+      }
+      const { firstName, lastName, email, password } = req.body
+   
+      const existingUser = await userModel.findOne({ email })
+      if (existingUser) {
+         return res.status(400).json({ message: "User already exist with this email, try logging in" })
+      }
+   
+      const hashedPassword = await userModel.hashPassword(password)
+      const user = await userModel.create({ firstName, lastName, email, password: hashedPassword })
+      const token = await user.generateAuthToken()
+   
+      res.status(201).json({ token, user })
+   } catch (error) {
+      res.status(500).json({message:"Error while registering in user"})
+
    }
-   const { firstName, lastName, email, password } = req.body
-
-   const existingUser = await userModel.findOne({ email })
-   if (existingUser) {
-      return res.status(400).json({ message: "User already exist with this email, try logging in" })
-   }
-
-   const hashedPassword = await userModel.hashPassword(password)
-   const user = await userModel.create({ firstName, lastName, email, password: hashedPassword })
-   const token = await user.generateAuthToken()
-
-   res.status(201).json({ token, user })
 }
 
 const loginUser = async(req,res) =>{

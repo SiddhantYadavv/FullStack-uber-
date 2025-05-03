@@ -1,5 +1,63 @@
 import { validationResult } from "express-validator"
+import { captainModel } from "../Models/captain.model.js"
 
-// const 
+const registerCaptain = async (req, res) => {
+    try {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
+        }
+        const { firstName, lastName, email, password, vehicle } = req.body
 
-export default {  };
+        const existingCap = await captainModel.findOne({ email })
+        if (existingCap) {
+            return res.status(400).json({ message: "Captain already exist with this email, try logging in" })
+        }
+        const hashedPassword = await captainModel.hashPassword(password)
+        const captain = await captainModel.create({
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword,
+            vehicle: {
+                color: vehicle.color,
+                plate: vehicle.plate,
+                capacity: vehicle.capacity,
+                vehicleType: vehicle.vehicleType
+            }
+        })
+        const token = await captain.generateAuthToken()
+
+        res.status(201).json({ token, captain })
+    } catch (error) {
+        res.status(500).json({ message: "Error while registering in captain" })
+
+    }
+}
+
+const loginCaptain = async (req, res) => {
+    try {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
+        }
+        const { email, password } = req.body
+        
+        const existingCap = await captainModel.findOne({ email }).select("+password")
+        if (!existingCap) {
+            return res.status(400).json({ message: "Invalid email or password" })
+        }
+        const isMatch = await existingCap.comparePasswords(password)
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid email or password" })
+        }
+        const token = await existingCap.generateAuthToken()
+        res.cookie("token", token)
+        res.status(200).json({ token, existingCap })
+
+    } catch (error) {
+        res.status(500).json({ message: "Error while logging in captain" })
+    }
+}
+
+export default { registerCaptain,loginCaptain };

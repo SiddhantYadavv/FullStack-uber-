@@ -44,7 +44,7 @@ const captainSchema = new mongoose.Schema({
             required:true,
             minLength:[3,"Plate must be 3 character long"]
         },
-        capactit:{
+        capacity:{
             type:Number,
             required:true,
             min:[1,"Capacity must me atleast 1"]
@@ -71,7 +71,7 @@ captainSchema.methods.generateAuthToken = function(){
     return token
 }
 
-captainSchema.methods.comparePassword = async function (password){
+captainSchema.methods.comparePasswords = async function (password){
     return await bcrypt.compare(password,this.password)
 }
 
