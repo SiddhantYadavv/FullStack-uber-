@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator"
 import { captainModel } from "../Models/captain.model.js"
+import { blackListTokenModel } from "../Models/blackList.model.js"
 
 const registerCaptain = async (req, res) => {
     try {
@@ -60,4 +61,29 @@ const loginCaptain = async (req, res) => {
     }
 }
 
-export default { registerCaptain,loginCaptain };
+const getUserProfile= async(req,res)=>{
+try {
+    return res.status(200).json(req.user)
+} catch (error) {
+    res.status(500).json({ message: "Error while fetching captain details" })
+
+}
+}
+
+const logoutCaptain= async(req,res)=>{
+   try {
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[1]
+    if(!token){
+        res.status(401).json({message:"Token does not exist"})
+    }
+    res.clearCookie("token")
+    await blackListTokenModel.create({token})
+    res.status(200).json({message:"User Logged out successfully"})
+
+   } catch (error) {
+    res.status(500).json({message:"Error logging out captain"})
+
+   }
+}
+
+export default { registerCaptain, loginCaptain, getUserProfile, logoutCaptain };

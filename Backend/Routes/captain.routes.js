@@ -1,6 +1,7 @@
 import express from "express"
 import {body} from "express-validator"
 import captainController from "../Controllers/captain.controller.js"
+import { authCaptain } from "../Middlewares/auth.middleware.js"
 
 const router=express.Router()
 
@@ -18,5 +19,9 @@ router.post("/loginCaptain",[
     body("email").isEmail().withMessage("Invalid Email").normalizeEmail(),
     body("password").isLength({ min: 8 }).withMessage("Password must be at least 8 characters long"),
 ],captainController.loginCaptain)
+
+router.get("/profile", authCaptain ,captainController.getUserProfile)
+
+router.get("/logout", authCaptain ,captainController.logoutCaptain)
 
 export  {router as captainRouter}
