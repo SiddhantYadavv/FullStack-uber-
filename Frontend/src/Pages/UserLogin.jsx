@@ -1,14 +1,32 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserDataContext } from '../context/UserContext';
 
 const UserLogin = () => {
-
+  const navigate = useNavigate()
+  const {user,setUser} = useContext(UserDataContext)
   const [email,setEmail] =useState("")
   const [password,setPassword] =useState("")
 
-  const handleLogin =(e)=>{
+  const handleLogin =async(e)=>{
     e.preventDefault()
-    console.log(email,"  " ,password)
+    try {
+      const isEmpty=[email,password].some((val)=>val.trim()=="")
+      if (isEmpty) {
+        alert("All fields are mandatory");
+        return
+      }
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, {email:email,password:password})
+      if (response.data?.token) {
+        setUser(response.data?.user)
+        localStorage.setItem("token", response.data.token);
+        navigate("/home");
+      }
+     
+    } catch (error) {
+      console.log("Error Logging in : ",error)
+    }
   }
 
   return (
@@ -45,7 +63,7 @@ const UserLogin = () => {
 
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition"
+            className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition cursor-pointer"
           >
             Login
           </button>

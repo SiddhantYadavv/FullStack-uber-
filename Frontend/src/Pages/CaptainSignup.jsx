@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { CaptainDataContext } from '../context/CaptainContext';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CaptainSignup = () => {
+  const {captain,setCaptain} = useContext(CaptainDataContext)
+  const navigate = useNavigate()
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -14,7 +20,6 @@ const CaptainSignup = () => {
       vehicleType: ''
     }
   });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -35,10 +40,25 @@ const CaptainSignup = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log('Submitted Data:', formData);
-    // You can replace this with an API call like axios.post(...)
+   try {
+    const isEmpty = [formData.email,formData.firstName,formData.lastName,formData.password,formData.vehicle.capacity,formData.vehicle.color,formData.vehicle.plate,formData.vehicle.vehicleType].some((val)=>val.trim()==="")
+    if(isEmpty){
+      alert("All fields are required")
+      return
+    }
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/captain/registerCaptain`, formData)  
+    console.log("ressssss",response.data.captain) 
+    if (response.data.token) {
+      setCaptain(response.data.captain)
+      localStorage.setItem("token", response.data.token);
+      navigate("/home");
+    }
+  }
+     catch (error) {
+      console.log("Error signin captain")
+   }
   };
 
   return (
