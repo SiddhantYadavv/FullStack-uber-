@@ -53,7 +53,7 @@ const CaptainSignup = () => {
     if (response.data.token) {
       setCaptain(response.data.captain)
       localStorage.setItem("token", response.data.token);
-      navigate("/home");
+      navigate("/captainHome");
     }
   }
      catch (error) {

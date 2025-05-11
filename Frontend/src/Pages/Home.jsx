@@ -3,9 +3,8 @@ import { UserDataContext } from '../context/UserContext'
 
 const Home = () => {
   const {user} = useContext(UserDataContext)
-  console.log("///////",user)
   return (
-    <div>Home</div>
+    <div> User Home</div>
   )
 }
 

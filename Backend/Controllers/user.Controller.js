@@ -56,7 +56,12 @@ const loginUser = async(req,res) =>{
 
 const getUserProfile = async(req,res) =>{
    try {
-      res.status(200).json(req.user)
+      if(req.user!==null){
+        return res.status(200).json(req.user)
+    }
+    else{
+        return res.status(400).json({message:"Invalid User"})
+    }
    } catch (error) {
       res.status(500).json({message:"Error while fetching user profile"})
 
