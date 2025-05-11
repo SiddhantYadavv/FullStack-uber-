@@ -26,6 +26,7 @@ const UserProtectedWrapper = ({ children }) => {
                         setIsLoading(false)
                        } 
                 }).catch((error)=>{
+                  localStorage.removeItem("token")
                     navigate("/userLogin")
                 })
 

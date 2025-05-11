@@ -26,6 +26,7 @@ const CaptainProtrectedWrapper = ({ children }) => {
                         setIsLoading(false)
                        } 
                 }).catch((error)=>{
+                    localStorage.removeItem("token")
                     navigate("/captainLogin")
                 })
 

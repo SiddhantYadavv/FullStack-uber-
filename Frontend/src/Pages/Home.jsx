@@ -1,10 +1,46 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { UserDataContext } from '../context/UserContext'
+import 'remixicon/fonts/remixicon.css'
 
 const Home = () => {
-  const {user} = useContext(UserDataContext)
+  const { user } = useContext(UserDataContext)
+  const [showFull, setShowFull] = useState(false)
   return (
-    <div> User Home</div>
+    <div>
+
+      <div className='absolute top-4 left-4'>
+        <img className='h-10' src='https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png' />
+      </div>
+
+      <div>
+        <img className='h-[70vh] w-full object-cover' src='https://camo.githubusercontent.com/e0debd25d05c84be78d89bf7a2858c65e3cfecd72e95bd22ec50e85fa1f84cfb/68747470733a2f2f322e62702e626c6f6773706f742e636f6d2f2d574f70483738393364526b2f5733527372626f476678492f41414141414141414356552f767a6b39683975526262415777485633366a5455644b4f555552795946322d6167434c63424741732f73313630302f73637265656e73686f74362e706e67' />
+      </div>
+
+      <div className='h-screen flex flex-col justify-end items-center absolute top-0 w-full'>
+        <div className='w-full h-[30%] bg-white py-3 px-20 flex flex-col gap-5' >
+          <div className='w-full flex justify-between'>
+            <h1 className='text-4xl font-bold'> Find a trip</h1>
+            <div onClick={() => setShowFull(!showFull)}>
+              {!showFull ? <p className='text-4xl cursor-pointer'><i className="ri-arrow-up-wide-line"></i></p> :
+                <p className='text-4xl cursor-pointer'><i className="ri-arrow-down-wide-line"></i></p>}
+            </div>
+          </div>
+          <input onClick={()=>setShowFull(true)} className='p-3 rounded-2xl border-gray-300 border ' placeholder='Pickup Location' type='text' />
+          <input onClick={()=>setShowFull(true)} className='p-3 rounded-2xl border-gray-300 border' placeholder='Drop Location' type='text' />
+        </div>
+       <div
+        className={`
+          w-full bg-red-200 overflow-hidden transition-all duration-1000
+          ${showFull ? 'min-h-[70vh]' : 'min-h-0'}
+        `}
+      >
+        <div className={`${!showFull && "hidden"} py-2`}>
+          <p>Don't mind the background color, project is still in progress</p>
+        </div>
+      </div>
+      </div>
+
+    </div>
   )
 }
 
