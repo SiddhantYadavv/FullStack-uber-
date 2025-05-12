@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { UserDataContext } from '../context/UserContext'
 import 'remixicon/fonts/remixicon.css'
+import LocationSearchPanel from '../components/LocationSearchPanel'
 
 const Home = () => {
   const { user } = useContext(UserDataContext)
@@ -30,12 +31,12 @@ const Home = () => {
         </div>
        <div
         className={`
-          w-full bg-red-200 overflow-hidden transition-all duration-1000
+          w-full bg-white overflow-hidden transition-all duration-1000
           ${showFull ? 'min-h-[70vh]' : 'min-h-0'}
         `}
       >
-        <div className={`${!showFull && "hidden"} py-2`}>
-          <p>Don't mind the background color, project is still in progress</p>
+        <div className={`${!showFull && "hidden"} w-full flex justify-center`}>
+          <LocationSearchPanel/>
         </div>
       </div>
       </div>
