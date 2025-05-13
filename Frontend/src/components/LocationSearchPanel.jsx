@@ -1,7 +1,7 @@
 import React from 'react'
 import 'remixicon/fonts/remixicon.css'
 
-const LocationSearchPanel = () => {
+const LocationSearchPanel = ({setShowFull,setShowVehicles,showFull,showVehicles}) => {
     const addressData = [
         {
             name: "Cafe Coffee Day",
@@ -89,7 +89,10 @@ const LocationSearchPanel = () => {
         <div className='w-[40%] h-[70vh] overflow-x-scroll hide-scrollbar'>
             {addressData.map((item, index) => {
                 return (
-                    <div className='my-1 active:border-black flex flex-row items-center border border-gray-300 p-2 rounded-2xl mb-3 cursor-pointer' key={index}>
+                    <div onClick={()=>{
+                        setShowFull(!showFull)
+                        setShowVehicles(!showVehicles)
+                    }} className='my-1 active:border-black flex flex-row items-center border border-gray-300 p-2 rounded-2xl mb-3 cursor-pointer' key={index}>
                         <div className='mr-2 text-2xl'> 
                             <i className="ri-map-pin-line"></i>
                         </div>

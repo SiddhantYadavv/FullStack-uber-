@@ -2,10 +2,15 @@ import React, { useContext, useState } from 'react'
 import { UserDataContext } from '../context/UserContext'
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel'
+import VehicleList from '../components/VehicleList'
+import ConfirmRide from '../components/ConfirmRide'
 
 const Home = () => {
   const { user } = useContext(UserDataContext)
   const [showFull, setShowFull] = useState(false)
+  const [showVehicles, setShowVehicles] = useState(false)
+  const [confirmRide,setConfirmRide] = useState(null)
+
   return (
     <div>
 
@@ -26,19 +31,34 @@ const Home = () => {
                 <p className='text-4xl cursor-pointer'><i className="ri-arrow-down-wide-line"></i></p>}
             </div>
           </div>
-          <input onClick={()=>setShowFull(true)} className='p-3 rounded-2xl border-gray-300 border ' placeholder='Pickup Location' type='text' />
-          <input onClick={()=>setShowFull(true)} className='p-3 rounded-2xl border-gray-300 border' placeholder='Drop Location' type='text' />
+          <input onClick={() => setShowFull(true)} className='p-3 rounded-2xl border-gray-300 border ' placeholder='Pickup Location' type='text' />
+          <input onClick={() => setShowFull(true)} className='p-3 rounded-2xl border-gray-300 border' placeholder='Drop Location' type='text' />
         </div>
-       <div
-        className={`
+        <div
+          className={`
           w-full bg-white overflow-hidden transition-all duration-1000
-          ${showFull ? 'min-h-[70vh]' : 'min-h-0'}
-        `}
-      >
-        <div className={`${!showFull && "hidden"} w-full flex justify-center`}>
-          <LocationSearchPanel/>
+          ${showFull ? 'min-h-[70vh]' : 'min-h-0'}`}>
+          <div className={`${!showFull && "hidden"} w-full flex justify-center`}>
+            <LocationSearchPanel showFull={showFull} setShowFull={setShowFull} showVehicles={showVehicles} setShowVehicles={setShowVehicles} />
+          </div>
         </div>
-      </div>
+
+       { showVehicles &&  <div
+          className={`
+          w-full bg-white absolute bottom-0 ${showVehicles ? 'min-h-[50vh]' : 'min-h-0'}`}>
+          <div className={`${!showVehicles && "hidden"} w-full flex justify-center items-center h-[50vh]`}>
+            <VehicleList showVehicles={showVehicles} setShowVehicles={setShowVehicles} setConfirmRide={setConfirmRide}/>
+          </div>
+        </div>}
+
+        { confirmRide &&  <div
+          className={`
+          w-full bg-white absolute bottom-0 ${confirmRide ? 'min-h-[50vh]' : 'min-h-0'}`}>
+          <div className={`${!confirmRide && "hidden"} w-full flex justify-center items-center h-[50vh]`}>
+            <ConfirmRide confirmRide={confirmRide} setConfirmRide={setConfirmRide}/>
+          </div>
+        </div>}
+
       </div>
 
     </div>
