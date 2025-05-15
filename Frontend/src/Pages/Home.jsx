@@ -4,12 +4,14 @@ import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel'
 import VehicleList from '../components/VehicleList'
 import ConfirmRide from '../components/ConfirmRide'
+import DriverInfo from '../components/DriverInfo'
 
 const Home = () => {
   const { user } = useContext(UserDataContext)
   const [showFull, setShowFull] = useState(false)
   const [showVehicles, setShowVehicles] = useState(false)
   const [confirmRide,setConfirmRide] = useState(null)
+  const [showDriverInfo,setShowDriverInfo]=useState(null)
 
   return (
     <div>
@@ -23,6 +25,7 @@ const Home = () => {
       </div>
 
       <div className='h-screen flex flex-col justify-end items-center absolute top-0 w-full'>
+       
         <div className='w-full h-[30%] bg-white py-3 px-20 flex flex-col gap-5' >
           <div className='w-full flex justify-between'>
             <h1 className='text-4xl font-bold'> Find a trip</h1>
@@ -34,6 +37,7 @@ const Home = () => {
           <input onClick={() => setShowFull(true)} className='p-3 rounded-2xl border-gray-300 border ' placeholder='Pickup Location' type='text' />
           <input onClick={() => setShowFull(true)} className='p-3 rounded-2xl border-gray-300 border' placeholder='Drop Location' type='text' />
         </div>
+
         <div
           className={`
           w-full bg-white overflow-hidden transition-all duration-1000
@@ -55,7 +59,15 @@ const Home = () => {
           className={`
           w-full bg-white absolute bottom-0 ${confirmRide ? 'min-h-[50vh]' : 'min-h-0'}`}>
           <div className={`${!confirmRide && "hidden"} w-full flex justify-center items-center h-[50vh]`}>
-            <ConfirmRide confirmRide={confirmRide} setConfirmRide={setConfirmRide}/>
+            <ConfirmRide confirmRide={confirmRide} setConfirmRide={setConfirmRide} setShowDriverInfo={setShowDriverInfo}/>
+          </div>
+        </div>}
+
+        { showDriverInfo &&  <div
+          className={`
+          w-full bg-white absolute bottom-0 ${showDriverInfo ? 'min-h-[50vh]' : 'min-h-0'}`}>
+          <div className={`${!showDriverInfo && "hidden"} w-full flex justify-center items-center h-[50vh]`}>
+            <DriverInfo confirmRide={confirmRide} showDriverInfo={showDriverInfo} setShowDriverInfo={setShowDriverInfo}/>
           </div>
         </div>}
 
