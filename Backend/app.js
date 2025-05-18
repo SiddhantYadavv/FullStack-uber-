@@ -6,6 +6,7 @@ import { connectToDb } from './DB/db.js';
 import { UserRouter } from './Routes/user.routes.js';
 import { captainRouter } from './Routes/captain.routes.js';
 import  {mapRouter} from "./Routes/maps.routes.js"
+import { rideRouter } from './Routes/ride.routes.js';
 import cookieParser from 'cookie-parser';
 
 const app = express()
@@ -17,6 +18,7 @@ app.use(express.urlencoded())
 app.use("/user",UserRouter)
 app.use("/captain",captainRouter)
 app.use("/maps",mapRouter)
+app.use("/rides",rideRouter)
 
 
 connectToDb()
