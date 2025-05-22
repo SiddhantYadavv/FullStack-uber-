@@ -5,13 +5,29 @@ import LocationSearchPanel from '../components/LocationSearchPanel'
 import VehicleList from '../components/VehicleList'
 import ConfirmRide from '../components/ConfirmRide'
 import DriverInfo from '../components/DriverInfo'
+import {showToastSuccess,showToastError} from "../components/Toast/ToastFunction"
+import axios from "axios"
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
   const { user } = useContext(UserDataContext)
+  const navigate = useNavigate()
+
   const [showFull, setShowFull] = useState(false)
   const [showVehicles, setShowVehicles] = useState(false)
-  const [confirmRide,setConfirmRide] = useState(null)
-  const [showDriverInfo,setShowDriverInfo]=useState(null)
+  const [confirmRide, setConfirmRide] = useState(null)
+  const [showDriverInfo, setShowDriverInfo] = useState(null)
+
+const handleLogout=async()=>{
+  const token=localStorage.getItem("token")
+  if(!token) return showToastError("token does not exist")
+  try {
+    await axios.get(`${import.meta.env.VITE_API_URL}/user/logout`,{headers:{Authorization: `bearer ${token}`}})
+    navigate("/userLogin")
+  } catch (error) {
+    showToastError("Error logging out, try again")
+  }
+}
 
   return (
     <div>
@@ -20,12 +36,15 @@ const Home = () => {
         <img className='h-10' src='https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png' />
       </div>
 
+      <div onClick={()=>handleLogout()} className='z-10 absolute top-4 right-4 hover:cursor-pointer'>
+        <i className="ri-logout-box-line text-3xl"></i>
+      </div>
       <div>
         <img className='h-[70vh] w-full object-cover' src='https://camo.githubusercontent.com/e0debd25d05c84be78d89bf7a2858c65e3cfecd72e95bd22ec50e85fa1f84cfb/68747470733a2f2f322e62702e626c6f6773706f742e636f6d2f2d574f70483738393364526b2f5733527372626f476678492f41414141414141414356552f767a6b39683975526262415777485633366a5455644b4f555552795946322d6167434c63424741732f73313630302f73637265656e73686f74362e706e67' />
       </div>
 
       <div className='h-screen flex flex-col justify-end items-center absolute top-0 w-full'>
-       
+
         <div className='w-full h-[30%] bg-white py-3 px-20 flex flex-col gap-5' >
           <div className='w-full flex justify-between'>
             <h1 className='text-4xl font-bold'> Find a trip</h1>
@@ -47,27 +66,27 @@ const Home = () => {
           </div>
         </div>
 
-       { showVehicles &&  <div
+        {showVehicles && <div
           className={`
           w-full bg-white absolute bottom-0 ${showVehicles ? 'min-h-[50vh]' : 'min-h-0'}`}>
           <div className={`${!showVehicles && "hidden"} w-full flex justify-center items-center h-[50vh]`}>
-            <VehicleList showVehicles={showVehicles} setShowVehicles={setShowVehicles} setConfirmRide={setConfirmRide}/>
+            <VehicleList showVehicles={showVehicles} setShowVehicles={setShowVehicles} setConfirmRide={setConfirmRide} />
           </div>
         </div>}
 
-        { confirmRide &&  <div
+        {confirmRide && <div
           className={`
           w-full bg-white absolute bottom-0 ${confirmRide ? 'min-h-[50vh]' : 'min-h-0'}`}>
           <div className={`${!confirmRide && "hidden"} w-full flex justify-center items-center h-[50vh]`}>
-            <ConfirmRide confirmRide={confirmRide} setConfirmRide={setConfirmRide} setShowDriverInfo={setShowDriverInfo}/>
+            <ConfirmRide confirmRide={confirmRide} setConfirmRide={setConfirmRide} setShowDriverInfo={setShowDriverInfo} />
           </div>
         </div>}
 
-        { showDriverInfo &&  <div
+        {showDriverInfo && <div
           className={`
           w-full bg-white absolute bottom-0 ${showDriverInfo ? 'min-h-[50vh]' : 'min-h-0'}`}>
           <div className={`${!showDriverInfo && "hidden"} w-full flex justify-center items-center h-[50vh]`}>
-            <DriverInfo confirmRide={confirmRide} showDriverInfo={showDriverInfo} setShowDriverInfo={setShowDriverInfo}/>
+            <DriverInfo confirmRide={confirmRide} showDriverInfo={showDriverInfo} setShowDriverInfo={setShowDriverInfo} />
           </div>
         </div>}
 
