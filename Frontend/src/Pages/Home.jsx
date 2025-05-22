@@ -5,10 +5,11 @@ import LocationSearchPanel from '../components/LocationSearchPanel'
 import VehicleList from '../components/VehicleList'
 import ConfirmRide from '../components/ConfirmRide'
 import DriverInfo from '../components/DriverInfo'
-import {showToastSuccess,showToastError} from "../components/Toast/ToastFunction"
+import { showToastSuccess, showToastError } from "../components/Toast/ToastFunction"
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 
+const token = localStorage.getItem("token")
 const Home = () => {
   const { user } = useContext(UserDataContext)
   const navigate = useNavigate()
@@ -18,16 +19,32 @@ const Home = () => {
   const [confirmRide, setConfirmRide] = useState(null)
   const [showDriverInfo, setShowDriverInfo] = useState(null)
 
-const handleLogout=async()=>{
-  const token=localStorage.getItem("token")
-  if(!token) return showToastError("token does not exist")
-  try {
-    await axios.get(`${import.meta.env.VITE_API_URL}/user/logout`,{headers:{Authorization: `bearer ${token}`}})
-    navigate("/userLogin")
-  } catch (error) {
-    showToastError("Error logging out, try again")
+  // ----------------------------------States for search input-----------------------------------
+  const [selectedInput, setSelectedInput] = useState("")
+  const [pickUpLocation, setPickUpLocation] = useState("")
+  const [dropLocation, setDropLocation] = useState("")
+  const [autoSuggestData, setAutoSuggestData] = useState([])
+
+
+  const handleLogout = async () => {
+    if (!token) return showToastError("token does not exist")
+    try {
+      await axios.get(`${import.meta.env.VITE_API_URL}/user/logout`, { headers: { Authorization: `bearer ${token}` } })
+      navigate("/userLogin")
+    } catch (error) {
+      showToastError("Error logging out, try again")
+    }
   }
-}
+
+  const handleAutoSearch = async (e) => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/maps/getSuggestions?input=${e.target.value}`, { headers: { Authorization: `bearer ${token}` } })
+      setAutoSuggestData(response.data)
+    } catch (error) {
+      showToastError("Could'nt search ")
+
+    }
+  }
 
   return (
     <div>
@@ -36,9 +53,10 @@ const handleLogout=async()=>{
         <img className='h-10' src='https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png' />
       </div>
 
-      <div onClick={()=>handleLogout()} className='z-10 absolute top-4 right-4 hover:cursor-pointer'>
+      {!showFull && <div onClick={() => handleLogout()} className='z-10 absolute top-4 right-4 hover:cursor-pointer'>
         <i className="ri-logout-box-line text-3xl"></i>
-      </div>
+      </div>}
+
       <div>
         <img className='h-[70vh] w-full object-cover' src='https://camo.githubusercontent.com/e0debd25d05c84be78d89bf7a2858c65e3cfecd72e95bd22ec50e85fa1f84cfb/68747470733a2f2f322e62702e626c6f6773706f742e636f6d2f2d574f70483738393364526b2f5733527372626f476678492f41414141414141414356552f767a6b39683975526262415777485633366a5455644b4f555552795946322d6167434c63424741732f73313630302f73637265656e73686f74362e706e67' />
       </div>
@@ -53,8 +71,27 @@ const handleLogout=async()=>{
                 <p className='text-4xl cursor-pointer'><i className="ri-arrow-down-wide-line"></i></p>}
             </div>
           </div>
-          <input onClick={() => setShowFull(true)} className='p-3 rounded-2xl border-gray-300 border ' placeholder='Pickup Location' type='text' />
-          <input onClick={() => setShowFull(true)} className='p-3 rounded-2xl border-gray-300 border' placeholder='Drop Location' type='text' />
+          <input onClick={() => setSelectedInput("pickUpLocation")}
+            onChange={(e)=>{
+              handleAutoSearch(e)
+              setPickUpLocation(e.target.value)
+              setShowFull(true)
+            }}
+            value={pickUpLocation}
+            className='p-3 rounded-2xl border-gray-300 border '
+            placeholder='Pickup Location'
+            type='text' />
+
+          <input onClick={() => setSelectedInput("dropLocation")}
+             onChange={(e)=>{
+              handleAutoSearch(e)
+              setDropLocation(e.target.value)
+              setShowFull(true)
+            }}
+            value={dropLocation}
+            className='p-3 rounded-2xl border-gray-300 border'
+            placeholder='Drop Location'
+            type='text' />
         </div>
 
         <div
@@ -62,7 +99,19 @@ const handleLogout=async()=>{
           w-full bg-white overflow-hidden transition-all duration-1000
           ${showFull ? 'min-h-[70vh]' : 'min-h-0'}`}>
           <div className={`${!showFull && "hidden"} w-full flex justify-center`}>
-            <LocationSearchPanel showFull={showFull} setShowFull={setShowFull} showVehicles={showVehicles} setShowVehicles={setShowVehicles} />
+            <LocationSearchPanel
+              showFull={showFull}
+              setShowFull={setShowFull}
+              showVehicles={showVehicles}
+              setShowVehicles={setShowVehicles}
+              autoSuggestData={autoSuggestData}
+              selectedInput={selectedInput}
+              setPickUpLocation={setPickUpLocation}
+              setDropLocation={setDropLocation}
+              setAutoSuggestData={setAutoSuggestData}
+              pickUpLocation={pickUpLocation}
+              dropLocation={dropLocation}
+            />
           </div>
         </div>
 
