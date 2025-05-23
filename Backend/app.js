@@ -22,7 +22,7 @@ app.use("/rides",rideRouter)
 
 
 connectToDb()
-
-app.listen(process.env.PORT,()=>{
+//remove "0.0.0.0" later
+app.listen(process.env.PORT,'0.0.0.0',()=>{
     console.log("Server is running on port:",process.env.PORT)
 })
