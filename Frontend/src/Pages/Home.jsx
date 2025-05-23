@@ -24,7 +24,11 @@ const Home = () => {
   const [pickUpLocation, setPickUpLocation] = useState("")
   const [dropLocation, setDropLocation] = useState("")
   const [autoSuggestData, setAutoSuggestData] = useState([])
-
+//---------------------------------------------------------------------------------
+ const [distanceAndTime,setDistanceAndTime]=useState({
+        "distance":{},
+        "duration":{}
+    })
 
   const handleLogout = async () => {
     if (!token) return showToastError("token does not exist")
@@ -111,6 +115,8 @@ const Home = () => {
               setAutoSuggestData={setAutoSuggestData}
               pickUpLocation={pickUpLocation}
               dropLocation={dropLocation}
+              distanceAndTime={distanceAndTime}
+              setDistanceAndTime={setDistanceAndTime}
             />
           </div>
         </div>
