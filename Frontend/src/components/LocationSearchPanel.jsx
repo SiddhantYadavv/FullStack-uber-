@@ -29,7 +29,6 @@ if(!pickUpLocation&&!dropLocation){
 }
     return (
         <div className='w-[40%] h-[70vh] overflow-x-scroll hide-scrollbar flex items-center flex-col'>
-            {(pickUpLocation && dropLocation) && <button onClick={()=>getDistanceAndTime()} className='bg-black text-white py-3 px-10 rounded-2xl hover:cursor-pointer hover:bg-gray-800'> Find Ride</button>}
 
             {autoSuggestData.length === 0 && !(pickUpLocation && dropLocation) && (
                 <p>Try searching</p>
@@ -52,6 +51,10 @@ if(!pickUpLocation&&!dropLocation){
                 </div>
             ))
             )}
+
+            {(pickUpLocation && dropLocation) && <button onClick={()=>getDistanceAndTime()} className='bg-black text-white py-3 px-10 rounded-2xl hover:cursor-pointer hover:bg-gray-800'> Find Ride</button>}
+
+
         </div>
     );
 
