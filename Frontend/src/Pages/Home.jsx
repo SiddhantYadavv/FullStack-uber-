@@ -9,11 +9,12 @@ import { showToastSuccess, showToastError } from "../components/Toast/ToastFunct
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 
-const token = localStorage.getItem("token")
 const Home = () => {
   const { user } = useContext(UserDataContext)
   const navigate = useNavigate()
-
+  
+  const token = localStorage.getItem("token")
+  
   const [showFull, setShowFull] = useState(false)
   const [showVehicles, setShowVehicles] = useState(false)
   const [confirmRide, setConfirmRide] = useState(null)

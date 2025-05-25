@@ -4,11 +4,12 @@ import axios from "axios"
 import { useState } from 'react'
 
 
-const token = localStorage.getItem("token")
 
 
 const LocationSearchPanel = ({ setShowFull, setShowVehicles, showFull, showVehicles, autoSuggestData, selectedInput, setPickUpLocation, setDropLocation, setAutoSuggestData, pickUpLocation, dropLocation,distanceAndTime,setDistanceAndTime }) => {
-   
+    
+    const token = localStorage.getItem("token")
+    
     const getDistanceAndTime = async (e) => {
     try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/maps/getDistanceTime?current=${pickUpLocation}&destination=${dropLocation}`, { headers: { Authorization: `bearer ${token}` } })
