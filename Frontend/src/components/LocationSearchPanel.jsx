@@ -1,33 +1,31 @@
 import React from 'react'
 import 'remixicon/fonts/remixicon.css'
 import axios from "axios"
-import { useState } from 'react'
 
 
+const LocationSearchPanel = ({ setShowFull, setShowVehicles, showFull, showVehicles, autoSuggestData, selectedInput, setPickUpLocation, setDropLocation, setAutoSuggestData, pickUpLocation, dropLocation, distanceAndTime, setDistanceAndTime }) => {
 
-
-const LocationSearchPanel = ({ setShowFull, setShowVehicles, showFull, showVehicles, autoSuggestData, selectedInput, setPickUpLocation, setDropLocation, setAutoSuggestData, pickUpLocation, dropLocation,distanceAndTime,setDistanceAndTime }) => {
-    
     const token = localStorage.getItem("token")
-    
+
     const getDistanceAndTime = async (e) => {
-    try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/maps/getDistanceTime?current=${pickUpLocation}&destination=${dropLocation}`, { headers: { Authorization: `bearer ${token}` } })
-        // alert(response.data.distance.text)
-       
-    const { distance, duration } = response.data;
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/maps/getDistanceTime?current=${pickUpLocation}&destination=${dropLocation}`, { headers: { Authorization: `bearer ${token}` } })
+            // alert(response.data.distance.text)
 
-    setDistanceAndTime({ distance, duration});
-    setShowFull(false)
-    setShowVehicles(true)
-    } catch (error) {
-      showToastError("Could'nt search ")
+            const { distance, duration } = response.data;
 
+            setDistanceAndTime({ distance, duration });
+            setShowFull(false)
+            setShowVehicles(true)
+        } catch (error) {
+            showToastError("Could'nt get date and time")
+
+        }
     }
-  }
-if(!pickUpLocation&&!dropLocation){
-    return <div>Try searching ...</div>
-}
+
+    if (!pickUpLocation && !dropLocation) {
+        return <div>Try searching ...</div>
+    }
     return (
         <div className='w-[40%] h-[70vh] overflow-x-scroll hide-scrollbar flex items-center flex-col'>
 
@@ -53,7 +51,7 @@ if(!pickUpLocation&&!dropLocation){
             ))
             )}
 
-            {(pickUpLocation && dropLocation) && <button onClick={()=>getDistanceAndTime()} className='bg-black text-white py-3 px-10 rounded-2xl hover:cursor-pointer hover:bg-gray-800'> Find Ride</button>}
+            {(pickUpLocation && dropLocation) && <button onClick={() => getDistanceAndTime()} className='bg-black text-white py-3 px-10 rounded-2xl hover:cursor-pointer hover:bg-gray-800'> Find Ride</button>}
 
 
         </div>

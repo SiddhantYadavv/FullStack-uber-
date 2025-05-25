@@ -21,7 +21,6 @@ const UserProtectedWrapper = ({ children }) => {
                     }
                 }).then((response)=>{
                        if(response.status===200){
-                        console.log("Verified User")
                         setUser(response.data)
                         setIsLoading(false)
                        } 

@@ -12,9 +12,9 @@ import { useNavigate } from 'react-router-dom'
 const Home = () => {
   const { user } = useContext(UserDataContext)
   const navigate = useNavigate()
-  
+
   const token = localStorage.getItem("token")
-  
+
   const [showFull, setShowFull] = useState(false)
   const [showVehicles, setShowVehicles] = useState(false)
   const [confirmRide, setConfirmRide] = useState(null)
@@ -25,11 +25,15 @@ const Home = () => {
   const [pickUpLocation, setPickUpLocation] = useState("")
   const [dropLocation, setDropLocation] = useState("")
   const [autoSuggestData, setAutoSuggestData] = useState([])
-//---------------------------------------------------------------------------------
- const [distanceAndTime,setDistanceAndTime]=useState({
-        "distance":{},
-        "duration":{}
-    })
+  //---------------------------------------------------------------------------------
+  const [distanceAndTime, setDistanceAndTime] = useState({
+    "distance": {},
+    "duration": {}
+  })
+  //---------------------------------------------------------------------------------
+  const [fare, setFare] = useState({})
+  //---------------------------------------------------------------------------------
+
 
   const handleLogout = async () => {
     if (!token) return showToastError("token does not exist")
@@ -77,7 +81,7 @@ const Home = () => {
             </div>
           </div>
           <input onClick={() => setSelectedInput("pickUpLocation")}
-            onChange={(e)=>{
+            onChange={(e) => {
               handleAutoSearch(e)
               setPickUpLocation(e.target.value)
               setShowFull(true)
@@ -88,7 +92,7 @@ const Home = () => {
             type='text' />
 
           <input onClick={() => setSelectedInput("dropLocation")}
-             onChange={(e)=>{
+            onChange={(e) => {
               handleAutoSearch(e)
               setDropLocation(e.target.value)
               setShowFull(true)
@@ -126,7 +130,15 @@ const Home = () => {
           className={`
           w-full bg-white absolute bottom-0 ${showVehicles ? 'min-h-[50vh]' : 'min-h-0'}`}>
           <div className={`${!showVehicles && "hidden"} w-full flex justify-center items-center h-[50vh]`}>
-            <VehicleList showVehicles={showVehicles} setShowVehicles={setShowVehicles} setConfirmRide={setConfirmRide} />
+            <VehicleList
+              showVehicles={showVehicles}
+              setShowVehicles={setShowVehicles}
+              setConfirmRide={setConfirmRide}
+              pickUpLocation={pickUpLocation}
+              dropLocation={dropLocation}
+              setFare={setFare}
+              fare={fare}
+            />
           </div>
         </div>}
 
@@ -134,7 +146,11 @@ const Home = () => {
           className={`
           w-full bg-white absolute bottom-0 ${confirmRide ? 'min-h-[50vh]' : 'min-h-0'}`}>
           <div className={`${!confirmRide && "hidden"} w-full flex justify-center items-center h-[50vh]`}>
-            <ConfirmRide confirmRide={confirmRide} setConfirmRide={setConfirmRide} setShowDriverInfo={setShowDriverInfo} />
+            <ConfirmRide
+              confirmRide={confirmRide}
+              setConfirmRide={setConfirmRide}
+              setShowDriverInfo={setShowDriverInfo}
+            />
           </div>
         </div>}
 
@@ -142,7 +158,11 @@ const Home = () => {
           className={`
           w-full bg-white absolute bottom-0 ${showDriverInfo ? 'min-h-[50vh]' : 'min-h-0'}`}>
           <div className={`${!showDriverInfo && "hidden"} w-full flex justify-center items-center h-[50vh]`}>
-            <DriverInfo confirmRide={confirmRide} showDriverInfo={showDriverInfo} setShowDriverInfo={setShowDriverInfo} />
+            <DriverInfo
+              confirmRide={confirmRide}
+              showDriverInfo={showDriverInfo}
+              setShowDriverInfo={setShowDriverInfo}
+            />
           </div>
         </div>}
 

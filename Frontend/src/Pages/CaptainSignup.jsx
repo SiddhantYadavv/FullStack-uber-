@@ -49,7 +49,6 @@ const CaptainSignup = () => {
       return
     }
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/captain/registerCaptain`, formData)  
-    console.log("ressssss",response.data.captain) 
     if (response.data.token) {
       setCaptain(response.data.captain)
       localStorage.setItem("token", response.data.token);

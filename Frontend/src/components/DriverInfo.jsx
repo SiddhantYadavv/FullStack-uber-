@@ -18,9 +18,9 @@ const DriverInfo = ({showDriverInfo,setShowDriverInfo,confirmRide}) => {
                     <p className='text-base text-right'>Car name</p>
                 </div>
             </div>
-            <p className='pb-3 text-xl'><b>Current Location: </b>{confirmRide.currentLocation}</p>
-            <p className='pb-3 text-xl'><b>Destination: </b>{confirmRide.destination}</p>
-            <p className='pb-3 text-xl'><b>Price: </b>{confirmRide.price}</p>
+            <p className='pb-3 text-xl'><b>Current Location: </b>{confirmRide.pickUpLocation}</p>
+            <p className='pb-3 text-xl'><b>Destination: </b>{confirmRide.dropLocation}</p>
+            <p className='pb-3 text-xl'><b>Price: </b>₹ {confirmRide.price}</p>
                 <button onClick={() => navigate("/userRiding")} className='bg-green-700 px-10 py-3 rounded-2xl text-white font-bold cursor-pointer hover:bg-green-600'>Confirm Booking</button>
 
             <div onClick={() => {
