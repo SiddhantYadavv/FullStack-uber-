@@ -24,9 +24,9 @@ const getFare = async (pickUpLocation, dropLocation) => {
         const timeInMins = Number((distanceAndTime.duration.value / 60).toFixed(3))
 
         const fare = {
-            car: baseFare.car + (perKmPrice.car * distanceInKms) + (perMinRate.car * timeInMins),
-            auto: baseFare.auto + (perKmPrice.auto * distanceInKms) + (perMinRate.auto * timeInMins),
-            bike: baseFare.bike + (perKmPrice.bike * distanceInKms) + (perMinRate.bike * timeInMins),
+            car: Math.ceil(baseFare.car + (perKmPrice.car * distanceInKms) + (perMinRate.car * timeInMins)),
+            auto: Math.ceil(baseFare.auto + (perKmPrice.auto * distanceInKms) + (perMinRate.auto * timeInMins)),
+            bike: Math.ceil(baseFare.bike + (perKmPrice.bike * distanceInKms) + (perMinRate.bike * timeInMins)),
         }
         return fare
 
@@ -69,4 +69,4 @@ const createRide = async (user, pickUpLocation, dropLocation, vehicleType) => {
     }
 }
 
-export { createRide }
+export { createRide,getFare}

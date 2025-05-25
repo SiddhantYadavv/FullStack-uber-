@@ -1,10 +1,7 @@
-import mongoose from "mongoose";
-import express, { json } from "express"
 import { userModel } from "../Models/user.model.js";
 import { validationResult } from "express-validator"
 import bcrypt from "bcrypt"
 import { blackListTokenModel } from "../Models/blackList.model.js";
-
 
 const registerUser = async (req, res, next) => {
    try {
@@ -81,7 +78,7 @@ const logoutUser = async(req,res) => {
       res.status(200).json({message:"User Logged out successfully"})
       
    } catch (error) {
-      
+      console.log("Error logging out",error)
    }
 }
 
