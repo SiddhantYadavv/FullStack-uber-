@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { UserDataContext } from '../context/UserContext'
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel'
@@ -8,11 +8,12 @@ import DriverInfo from '../components/DriverInfo'
 import { showToastSuccess, showToastError } from "../components/Toast/ToastFunction"
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
+import { SocketContext } from '../context/SocketContext'
+
 
 const Home = () => {
   const { user } = useContext(UserDataContext)
   const navigate = useNavigate()
-
   const token = localStorage.getItem("token")
 
   const [showFull, setShowFull] = useState(false)
@@ -34,7 +35,15 @@ const Home = () => {
   const [fare, setFare] = useState({})
   //---------------------------------------------------------------------------------
 
+  const {socket} = useContext(SocketContext)
 
+  useEffect(() => {
+
+    socket.emit("join",{userType:"user",userId:user._id})
+  
+  }, [user])
+  
+  
   const handleLogout = async () => {
     if (!token) return showToastError("token does not exist")
     try {
