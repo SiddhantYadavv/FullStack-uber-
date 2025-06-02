@@ -1,9 +1,12 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import CaptainInfo from '../components/CaptainComponents/CaptainInfo'
 import NewRides from '../components/CaptainComponents/NewRides'
 import { useGSAP } from "@gsap/react"
 import gsap from 'gsap'
 import ConfirmRide from '../components/CaptainComponents/ConfirmRide'
+import {SocketContext} from "../context/SocketContext"
+import { useContext } from 'react'
+import {CaptainDataContext} from "../context/CaptainContext"
 
 const CaptainHome = () => {
 
@@ -13,10 +16,18 @@ const CaptainHome = () => {
   const [newRidePanelOpen, setNewRidePanelOpen] = useState(true)
   const [confirmRidePanelOpen, setConfirmRidePanelOpen] = useState(false)
 
+  const {socket} = useContext(SocketContext)
+  const {captain} = useContext(CaptainDataContext)
+
   const closeAll = () => {
     setNewRidePanelOpen(false)
     setConfirmRidePanelOpen(false)
   }
+
+  useEffect(() => {
+    socket.emit("join",{userType:"captain",userId:captain._id})
+  }, [])
+  
 
   useGSAP(() => {
     if (newRidePanelOpen) {
