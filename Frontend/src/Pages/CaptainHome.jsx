@@ -26,6 +26,24 @@ const CaptainHome = () => {
 
   useEffect(() => {
     socket.emit("join",{userType:"captain",userId:captain._id})
+
+    const updateLocation = () => {
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(position=>{
+          socket.emit("update-location-captain",{userId:captain._id,location:{
+            ltd:position.coords.latitude,
+            lng:position.coords.longitude
+          }})
+        })
+      }
+    }
+
+    const locationInterval = setInterval(() => {
+      updateLocation()
+    }, 10000);
+
+    return() => clearInterval(locationInterval)
+
   }, [])
   
 
