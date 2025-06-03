@@ -87,9 +87,10 @@ export const getCaptainInTheRadius = async (ltd,lng,radius) => {
   try {
       const captains = captainModel.find({
         location:{ $geoWithin:{
-          $centerSphere:[[ltd,lng],radius/3963]
+          $centerSphere:[[ltd,lng],radius/6371]
         }}
       })
+      return captains
   } catch (error) {
     res.status(500).json({status:500,message:"Error getting captains in the radius"})
   }
