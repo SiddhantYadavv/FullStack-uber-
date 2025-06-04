@@ -21,7 +21,7 @@ export const getAddressCoordinates = async (address) => {
     const location = data.results[0].geometry.location;
 
     return {
-      lat: location.lat,
+      ltd: location.lat,
       lng: location.lng,
     };
   } catch (error) {

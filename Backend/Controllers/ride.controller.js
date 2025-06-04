@@ -1,5 +1,8 @@
 import { createRide, getFare } from "../services/ride.service.js"
 import { validationResult } from "express-validator"
+import {getCaptainInTheRadius,getAddressCoordinates} from "../services/maps.service.js"
+import {sendMessageToSocketId} from "../socket.js"
+
 
 const createRideController = async (req, res) => {
 
@@ -10,7 +13,17 @@ const createRideController = async (req, res) => {
     const { pickUpLocation, dropLocation, vehicleType } = req.body
     try {
         const response = await createRide( req.user._id, pickUpLocation, dropLocation, vehicleType )
-        return res.status(200).json(response)
+        res.status(200).json(response)
+        
+        const pickUpCoordinates = await getAddressCoordinates(pickUpLocation)
+        const captainsInRadius = await getCaptainInTheRadius(pickUpCoordinates.ltd,pickUpCoordinates.lng,2)
+        response.otp=""
+        captainsInRadius.map((captain)=>{
+            sendMessageToSocketId(captain._id,{
+                event : "new-ride",
+                data:response
+            })
+        })
 
     } catch (error) {
         res.status(500).json({ message: "Error while creating ride", error: error })
