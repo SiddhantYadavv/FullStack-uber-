@@ -27,7 +27,7 @@ const CaptainInfo = () => {
                 <p>Hours Online</p>
             </div>
             <div className='flex flex-col items-center'>
-                <div><i class="ri-time-line"></i></div>
+                <div><i className="ri-time-line"></i></div>
                 <p className='text-xl font-bold'>10.2</p>
                 <p>Hours Online</p>
             </div>

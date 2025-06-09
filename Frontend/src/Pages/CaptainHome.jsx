@@ -4,9 +4,9 @@ import NewRides from '../components/CaptainComponents/NewRides'
 import { useGSAP } from "@gsap/react"
 import gsap from 'gsap'
 import ConfirmRide from '../components/CaptainComponents/ConfirmRide'
-import {SocketContext} from "../context/SocketContext"
+import { SocketContext } from "../context/SocketContext"
 import { useContext } from 'react'
-import {CaptainDataContext} from "../context/CaptainContext"
+import { CaptainDataContext } from "../context/CaptainContext"
 
 const CaptainHome = () => {
 
@@ -16,8 +16,8 @@ const CaptainHome = () => {
   const [newRidePanelOpen, setNewRidePanelOpen] = useState(true)
   const [confirmRidePanelOpen, setConfirmRidePanelOpen] = useState(false)
 
-  const {socket} = useContext(SocketContext)
-  const {captain} = useContext(CaptainDataContext)
+  const { socket } = useContext(SocketContext)
+  const { captain } = useContext(CaptainDataContext)
 
   const closeAll = () => {
     setNewRidePanelOpen(false)
@@ -25,27 +25,32 @@ const CaptainHome = () => {
   }
 
   useEffect(() => {
-    socket.emit("join",{userType:"captain",userId:captain._id})
+    socket.emit("join", { userType: "captain", userId: captain._id })
 
     const updateLocation = () => {
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(position=>{
-          socket.emit("update-location-captain",{userId:captain._id,location:{
-            ltd:position.coords.latitude,
-            lng:position.coords.longitude
-          }})
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          socket.emit("update-location-captain", {
+            userId: captain._id, location: {
+              ltd: position.coords.latitude,
+              lng: position.coords.longitude
+            }
+          })
         })
       }
     }
+    socket.on("new-ride", (data) => {
+      console.log(data)
+    });
 
     const locationInterval = setInterval(() => {
       updateLocation()
     }, 10000);
 
-    return() => clearInterval(locationInterval)
+    return () => clearInterval(locationInterval)
 
   }, [])
-  
+
 
   useGSAP(() => {
     if (newRidePanelOpen) {
