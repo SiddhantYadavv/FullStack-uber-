@@ -13,11 +13,14 @@ const CaptainHome = () => {
   const newRideRef = useRef(null)
   const confirmRideRef = useRef(null)
 
-  const [newRidePanelOpen, setNewRidePanelOpen] = useState(true)
+  const [newRidePanelOpen, setNewRidePanelOpen] = useState(false)
   const [confirmRidePanelOpen, setConfirmRidePanelOpen] = useState(false)
 
   const { socket } = useContext(SocketContext)
   const { captain } = useContext(CaptainDataContext)
+
+  // -------------------------------------------------------------------
+  const [rideData,setRideData]=useState(null)
 
   const closeAll = () => {
     setNewRidePanelOpen(false)
@@ -41,6 +44,8 @@ const CaptainHome = () => {
     }
     socket.on("new-ride", (data) => {
       console.log(data)
+      setRideData(data)
+      setNewRidePanelOpen(true)
     });
 
     const locationInterval = setInterval(() => {
@@ -92,7 +97,7 @@ const CaptainHome = () => {
 
 
       <div ref={newRideRef} className='h-0 bg-white w-full flex justify-center items-center absolute bottom-0 overflow-hidden'>
-        <NewRides setConfirmRidePanelOpen={setConfirmRidePanelOpen} closeAll={() => closeAll()} />
+        <NewRides rideData={rideData} setConfirmRidePanelOpen={setConfirmRidePanelOpen} closeAll={() => closeAll()} />
       </div>
 
       <div ref={confirmRideRef} className='h-0 bg-white w-full flex justify-center items-center absolute bottom-0 overflow-hidden'>
