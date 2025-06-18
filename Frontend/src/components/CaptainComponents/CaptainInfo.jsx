@@ -1,13 +1,13 @@
 import React from 'react'
 
-const CaptainInfo = () => {
-  return (
+const CaptainInfo = ({captain}) => {
+    return (
     <div className='w-[30%]'>
 
         <div className='flex flex-row justify-between items-center'>
             <div className='flex flex-row items-center'>
                 <img className='h-20 w-20 rounded-full object-contain' src='https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D'/>
-                <p className='text-xl ml-4 font-bold'>Driver Name</p>
+                <p className='text-xl ml-4 font-bold'>{captain.firstName+" "+captain.lastName}</p>
             </div>
             <div>
                 <p className='text-xl font-bold'>295.50</p>

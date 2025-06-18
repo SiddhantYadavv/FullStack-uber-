@@ -7,8 +7,15 @@ import ConfirmRide from '../components/CaptainComponents/ConfirmRide'
 import { SocketContext } from "../context/SocketContext"
 import { useContext } from 'react'
 import { CaptainDataContext } from "../context/CaptainContext"
+import { showToastError, showToastSuccess } from '../components/Toast/ToastFunction'
+import { useNavigate } from 'react-router-dom'
+import axios from "axios"
 
 const CaptainHome = () => {
+
+  const token = localStorage.getItem("token")
+    const navigate = useNavigate()
+  
 
   const newRideRef = useRef(null)
   const confirmRideRef = useRef(null)
@@ -20,7 +27,7 @@ const CaptainHome = () => {
   const { captain } = useContext(CaptainDataContext)
 
   // -------------------------------------------------------------------
-  const [rideData,setRideData]=useState(null)
+  const [rideData, setRideData] = useState(null)
 
   const closeAll = () => {
     setNewRidePanelOpen(false)
@@ -56,6 +63,16 @@ const CaptainHome = () => {
 
   }, [])
 
+  const handleLogout = async () => {
+    if (!token) return showToastError("token does not exist")
+    try {
+      await axios.get(`${import.meta.env.VITE_API_URL}/captain/logout`, { headers: { Authorization: `bearer ${token}` } })
+      showToastSuccess("Captain Logged out")
+      navigate("/captainLogin")
+    } catch (error) {
+      showToastError("Error logging out, try again")
+    }
+  }
 
   useGSAP(() => {
     if (newRidePanelOpen) {
@@ -81,10 +98,16 @@ const CaptainHome = () => {
     }
   }, [confirmRidePanelOpen])
 
+
+
   return (
     <div>
       <div className='absolute top-4 left-4'>
         <img className='h-10' src='https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png' />
+      </div>
+
+      <div onClick={() => handleLogout()} className='z-10 absolute top-4 right-4 hover:cursor-pointer'>
+        <i className="ri-logout-box-line text-3xl"></i>
       </div>
 
       <div>
@@ -92,7 +115,7 @@ const CaptainHome = () => {
       </div>
 
       <div className='h-[30vh] w-full flex justify-center pt-4' >
-        <CaptainInfo />
+        <CaptainInfo captain={captain} />
       </div>
 
 
