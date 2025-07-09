@@ -49,11 +49,16 @@ const CaptainHome = () => {
         })
       }
     }
+
     socket.on("new-ride", (data) => {
       console.log(data)
       setRideData(data)
       setNewRidePanelOpen(true)
     });
+
+    socket.on("ride-confirmed",ride=>{
+      
+    })
 
     const locationInterval = setInterval(() => {
       updateLocation()
@@ -73,6 +78,14 @@ const CaptainHome = () => {
       showToastError("Error logging out, try again")
     }
   }
+
+   const confirmRide = async()=>{
+      try {
+        const response = axios.post(`${import.meta.env.VITE_API_URL}/rides/confirmRide`,{})
+      } catch (error) {
+        
+      }
+    }
 
   useGSAP(() => {
     if (newRidePanelOpen) {
@@ -120,7 +133,7 @@ const CaptainHome = () => {
 
 
       <div ref={newRideRef} className='h-0 bg-white w-full flex justify-center items-center absolute bottom-0 overflow-hidden'>
-        <NewRides rideData={rideData} setConfirmRidePanelOpen={setConfirmRidePanelOpen} closeAll={() => closeAll()} />
+        <NewRides rideData={rideData} setConfirmRidePanelOpen={setConfirmRidePanelOpen} confirmRide={confirmRide} closeAll={() => closeAll()} />
       </div>
 
       <div ref={confirmRideRef} className='h-0 bg-white w-full flex justify-center items-center absolute bottom-0 overflow-hidden'>

@@ -1,7 +1,7 @@
 import express from "express"
 import { body, query } from "express-validator"
-import { authUser } from "../Middlewares/auth.middleware.js"
-import { createRideController,getFareController } from "../Controllers/ride.controller.js"
+import { authCaptain, authUser } from "../Middlewares/auth.middleware.js"
+import { createRideController, getFareController, confirmRide } from "../Controllers/ride.controller.js"
 
 const router = express.Router()
 
@@ -14,9 +14,15 @@ router.post("/createRide", authUser,
     , createRideController)
 
 
-router.get("/getFare",[
-    query("pickUpLocation").isLength({min:3}).withMessage("Pickup location must be atleast 3 characters long"),
-    query("dropLocation").isLength({min:3}).withMessage("Drop location must be atleast 3 characters long")
-],authUser,getFareController)
+router.get("/getFare", [
+    query("pickUpLocation").isLength({ min: 3 }).withMessage("Pickup location must be atleast 3 characters long"),
+    query("dropLocation").isLength({ min: 3 }).withMessage("Drop location must be atleast 3 characters long")
+], authUser, getFareController)
+
+
+router.post("/confirmRide", 
+    [
+    body("rideId").isMongoId().withMessage("Invalid ride ride")
+    ], authCaptain, confirmRide)
 
 export { router as rideRouter }
