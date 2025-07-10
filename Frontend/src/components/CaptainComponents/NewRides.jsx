@@ -1,6 +1,6 @@
 import React from 'react'
 
-const NewRides = ({closeAll,setConfirmRidePanelOpen,rideData}) => {
+const NewRides = ({closeAll,setConfirmRidePanelOpen,rideData,confirmRide}) => {
   return (
      <div className='w-[30%]'>
         <h1 className='text-2xl my-2 font-bold'>New Ride Available</h1>
@@ -22,7 +22,7 @@ const NewRides = ({closeAll,setConfirmRidePanelOpen,rideData}) => {
         </div>
 
         <div className='flex flex-row justify-evenly px-6'>
-            <button onClick={()=>setConfirmRidePanelOpen(true)} className='bg-green-700 text-white text-xl font-bold px-10 py-3 rounded-xl cursor-pointer hover:bg-green-600'>Accept</button>
+            <button onClick={()=>confirmRide()} className='bg-green-700 text-white text-xl font-bold px-10 py-3 rounded-xl cursor-pointer hover:bg-green-600'>Accept</button>
             <button onClick={()=>closeAll()} className='bg-red-700 text-white text-xl font-bold px-10 py-3 rounded-xl cursor-pointer hover:bg-red-600'>Reject</button>
              
         </div>

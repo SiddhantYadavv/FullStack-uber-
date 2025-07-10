@@ -14,8 +14,8 @@ import axios from "axios"
 const CaptainHome = () => {
 
   const token = localStorage.getItem("token")
-    const navigate = useNavigate()
-  
+  const navigate = useNavigate()
+
 
   const newRideRef = useRef(null)
   const confirmRideRef = useRef(null)
@@ -56,8 +56,8 @@ const CaptainHome = () => {
       setNewRidePanelOpen(true)
     });
 
-    socket.on("ride-confirmed",ride=>{
-      
+    socket.on("ride-confirmed", ride => {
+
     })
 
     const locationInterval = setInterval(() => {
@@ -79,13 +79,26 @@ const CaptainHome = () => {
     }
   }
 
-   const confirmRide = async()=>{
-      try {
-        const response = axios.post(`${import.meta.env.VITE_API_URL}/rides/confirmRide`,{})
-      } catch (error) {
-        
-      }
+  const confirmRide = async () => {
+    try {
+      const response = axios.post(`${import.meta.env.VITE_API_URL}/rides/confirmRide`, {
+
+        rideId: rideData._id,
+        captainId: captain._id,
+
+
+      }, {
+        headers: {
+          Authorization: `bearer ${localStorage.getItem('token')}`
+        }
+      })
+      setNewRidePanelOpen(false)
+    setConfirmRidePanelOpen(true)
+
+    } catch (error) {
+      console.log(error)
     }
+  }
 
   useGSAP(() => {
     if (newRidePanelOpen) {

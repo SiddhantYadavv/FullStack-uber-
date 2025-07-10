@@ -56,7 +56,7 @@ const confirmRide = async (req, res) => {
             return res.status(400).json({ message: "Invalid Input", error: errors.array() })
         }
         const { rideId } = req.body
-        const captainId = req.captain._id
+        const captainId = req.user._id
 
         await rideModel.findOneAndUpdate({ _id: rideId }, { status: "accepted", captain: captainId })
         await rideModel.findOneAndUpdate({ _id: rideId }, { status: "accepted" })

@@ -20,9 +20,9 @@ router.get("/getFare", [
 ], authUser, getFareController)
 
 
-router.post("/confirmRide", 
+router.post("/confirmRide", authCaptain,
     [
     body("rideId").isMongoId().withMessage("Invalid ride ride")
-    ], authCaptain, confirmRide)
+    ], confirmRide)
 
 export { router as rideRouter }
