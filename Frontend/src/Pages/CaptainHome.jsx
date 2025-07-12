@@ -51,7 +51,6 @@ const CaptainHome = () => {
     }
 
     socket.on("new-ride", (data) => {
-      console.log(data)
       setRideData(data)
       setNewRidePanelOpen(true)
     });
@@ -150,7 +149,7 @@ const CaptainHome = () => {
       </div>
 
       <div ref={confirmRideRef} className='h-0 bg-white w-full flex justify-center items-center absolute bottom-0 overflow-hidden'>
-        <ConfirmRide closeAll={() => closeAll()} />
+        <ConfirmRide rideData={rideData} closeAll={() => closeAll()} />
       </div>
 
     </div>

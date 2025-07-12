@@ -44,7 +44,11 @@ const Home = () => {
   }, [user])
 
   socket.on("ride-confirmed",(ride)=>{
-    
+    setShowDriverInfo(ride)
+  })
+  
+  socket.on("ride-started",(ride)=>{
+    navigate("/userRiding",{state:confirmRide})
   })
   
   

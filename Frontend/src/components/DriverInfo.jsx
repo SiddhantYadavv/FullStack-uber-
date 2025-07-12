@@ -13,15 +13,15 @@ const DriverInfo = ({showDriverInfo,setShowDriverInfo,confirmRide}) => {
             <div className='w-full flex justify-between items-center'>
                 <img className='h-20 mb-4' src={confirmRide.image} />
                 <div className='flex flex-col'>
-                    <p className='text-xl text-right'>Driver Name</p>
-                    <p className='text-2xl text-right'>Plate Number</p>
-                    <p className='text-base text-right'>Car name</p>
+                    <p className='text-xl text-right'>{showDriverInfo?.captain.firstName} {showDriverInfo?.captain.lastName}</p>
+                    <p className='text-xl text-right'>{showDriverInfo?.captain.vehicle.plate}</p>
+                    <p className='text-2xl font-bold text-right'>OTP: {showDriverInfo?.otp}</p>
                 </div>
             </div>
             <p className='pb-3 text-xl'><b>Current Location: </b>{confirmRide.pickUpLocation}</p>
             <p className='pb-3 text-xl'><b>Destination: </b>{confirmRide.dropLocation}</p>
             <p className='pb-3 text-xl'><b>Price: </b>₹ {confirmRide.price}</p>
-                <button onClick={() => navigate("/userRiding")} className='bg-green-700 px-10 py-3 rounded-2xl text-white font-bold cursor-pointer hover:bg-green-600'>Confirm Booking</button>
+                {/* <button onClick={() => navigate("/userRiding")} className='bg-green-700 px-10 py-3 rounded-2xl text-white font-bold cursor-pointer hover:bg-green-600'>Confirm Booking</button> */}
 
             <div onClick={() => {
                 setShowDriverInfo(!showDriverInfo)
