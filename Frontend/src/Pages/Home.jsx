@@ -48,7 +48,7 @@ const Home = () => {
   })
   
   socket.on("ride-started",(ride)=>{
-    navigate("/userRiding",{state:confirmRide})
+    navigate("/userRiding",{state:{confirmRide,showDriverInfo}})
   })
   
   

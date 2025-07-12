@@ -34,7 +34,6 @@ const ConfirmRide = ({ closeAll, rideData }) => {
             showToastError(error?.response.data.message || error.message)
 
         }
-        // navigate("/captainRiding")
     }
 
 
