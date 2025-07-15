@@ -29,7 +29,7 @@ const createRideController = async (req, res) => {
         })
 
     } catch (error) {
-        res.status(500).json({ message: "Error while creating ride", error: error })
+        res.status(500).json({ message: "Error while creating ride", error: error.message })
 
     }
 }
@@ -65,40 +65,68 @@ const confirmRide = async (req, res) => {
         if (!ride) {
             throw new Error("Ride not found")
         }
-        sendMessageToSocketId(ride.user.socketId,{
-            event:"ride-confirmed",
-            data:ride
+
+        sendMessageToSocketId(ride.user.socketId, {
+            event: "ride-confirmed",
+            data: ride
         })
         return res.status(200).json({ message: "Ride details fetched", ride })
     } catch (error) {
-        res.status(500).json({ message: "Error while confirming ride", error: error })
+        res.status(500).json({ message: "Error while confirming ride", error: error.message })
 
     }
 }
 
-const startRide = async (req,res)=> {
+const startRide = async (req, res) => {
     try {
-      const errors = validationResult(req)
+        const errors = validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).json({ message: "Invalid Input", error: errors.array() })
         }
-        const { rideId,otp } = req.body  
+        const { rideId, otp } = req.body
         const ride = await rideModel.findById(rideId).populate("user").populate("captain").select("+otp")
-        if(!ride){
+        if (!ride) {
             throw new Error("Ride not found")
         }
-        if(ride.otp!==otp){
-             throw new Error("OTP does not found")
+        if (ride.otp !== otp) {
+            throw new Error("OTP does not found")
         }
-         await rideModel.findOneAndUpdate({_id:rideId},{status:"ongoing"})
-        sendMessageToSocketId(ride.user.socketId,{
-            event:"ride-started",
-            data:ride
+        await rideModel.findOneAndUpdate({ _id: rideId }, { status: "ongoing" })
+        sendMessageToSocketId(ride.user.socketId, {
+            event: "ride-started",
+            data: ride
         })
         return res.status(200).json({ message: "Ride Started", ride })
     } catch (error) {
-         res.status(500).json({ message: "Error while starting ride", error: error.message })
+        res.status(500).json({ message: "Error while starting ride", error: error.message })
     }
 }
 
-export { createRideController, getFareController, confirmRide,startRide }
+const endRide = async (req, res) => {
+    try {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: "Invalid Input", error: errors.array() })
+        }
+        const { rideId } = req.body
+        const captainId = req.user._id
+
+        const ride = await rideModel.findOne({ _id: rideId, captain: captainId }).populate("user").populate("captain")
+        if (!ride) {
+            throw new Error("Ride not found")
+        }
+        if(ride.status!=="ongoing"){
+            throw new Error("Ride not ongoing")
+        }
+        await rideModel.findOneAndUpdate({ _id: rideId }, { status: "completed" })
+        sendMessageToSocketId(ride.user.socketId, {
+            event: "ride-ended",
+            data: ride
+        })
+        return res.status(200).json({ message: "Ride Completed", ride })
+    } catch (error) {
+        res.status(500).json({ message: "Error while Ending ride", error: error.message })
+    }
+}
+
+export { createRideController, getFareController, confirmRide, startRide, endRide }

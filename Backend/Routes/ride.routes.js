@@ -1,7 +1,7 @@
 import express from "express"
 import { body, query } from "express-validator"
 import { authCaptain, authUser } from "../Middlewares/auth.middleware.js"
-import { createRideController, getFareController, confirmRide, startRide } from "../Controllers/ride.controller.js"
+import { createRideController, getFareController, confirmRide, startRide,endRide } from "../Controllers/ride.controller.js"
 
 const router = express.Router()
 
@@ -29,5 +29,9 @@ router.post("/startRide", authCaptain, [
     body("rideId").isMongoId().withMessage("Invalid ride ride"),
     body("otp").isNumeric().isLength({ min: 4, max: 4 }).withMessage("OTP must be 4 digits number")
 ], startRide)
+
+router.post("/endRide", authCaptain, [
+    body("rideId").isMongoId().withMessage("Invalid ride ride"),
+], endRide)
 
 export { router as rideRouter }

@@ -1,14 +1,21 @@
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import DriverInfo from '../components/DriverInfo'
-
+import { SocketContext } from '../context/SocketContext'
+import { useContext } from 'react'
 
 const Riding = () => {
 
     const navigate = useNavigate()
     const location = useLocation();
     const rideData = location.state;
-    
+
+    const {socket} = useContext(SocketContext)
+
+    socket.on("ride-ended",(data)=>{
+        navigate("/home")
+    })
+
     return (
         <div>
             <div className='absolute top-4 left-4'>

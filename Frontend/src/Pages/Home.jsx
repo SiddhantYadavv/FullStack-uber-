@@ -35,27 +35,29 @@ const Home = () => {
   const [fare, setFare] = useState({})
   //---------------------------------------------------------------------------------
 
-  const {socket} = useContext(SocketContext)
+  const { socket } = useContext(SocketContext)
 
   useEffect(() => {
 
-    socket.emit("join",{userType:"user",userId:user._id})
-  
+    socket.emit("join", { userType: "user", userId: user._id })
+
   }, [user])
 
-  socket.on("ride-confirmed",(ride)=>{
+  socket.on("ride-confirmed", (ride) => {
     setShowDriverInfo(ride)
   })
-  
-  socket.on("ride-started",(ride)=>{
-    navigate("/userRiding",{state:{confirmRide,showDriverInfo}})
+
+  socket.on("ride-started", (ride) => {
+    navigate("/userRiding", { state: { confirmRide, showDriverInfo } })
   })
-  
-  
+
+
   const handleLogout = async () => {
     if (!token) return showToastError("token does not exist")
     try {
       await axios.get(`${import.meta.env.VITE_API_URL}/user/logout`, { headers: { Authorization: `bearer ${token}` } })
+      localStorage.clear()
+      showToastSuccess("User Logged out")
       navigate("/userLogin")
     } catch (error) {
       showToastError("Error logging out, try again")

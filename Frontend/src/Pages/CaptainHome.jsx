@@ -71,6 +71,7 @@ const CaptainHome = () => {
     if (!token) return showToastError("token does not exist")
     try {
       await axios.get(`${import.meta.env.VITE_API_URL}/captain/logout`, { headers: { Authorization: `bearer ${token}` } })
+      localStorage.clear()
       showToastSuccess("Captain Logged out")
       navigate("/captainLogin")
     } catch (error) {
@@ -92,7 +93,7 @@ const CaptainHome = () => {
         }
       })
       setNewRidePanelOpen(false)
-    setConfirmRidePanelOpen(true)
+      setConfirmRidePanelOpen(true)
 
     } catch (error) {
       console.log(error)
