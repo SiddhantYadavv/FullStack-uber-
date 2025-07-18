@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react'
 import { FinishRide } from '../components/CaptainComponents/FinishRide'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const CaptainRiding = () => {
-
+    const navigate = useNavigate()
      const location = useLocation();
         const rideData = location.state;
 
@@ -27,7 +27,7 @@ const CaptainRiding = () => {
 
     return (
         <div>
-            <div className='absolute top-4 left-4'>
+            <div onClick={()=>navigate("/captainHome")} className='absolute top-4 left-4 cursor-pointer'>
                 <img className='h-10' src='https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png' />
             </div>
 

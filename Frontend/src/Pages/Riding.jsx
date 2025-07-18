@@ -34,14 +34,14 @@ const Riding = () => {
                 <div className='w-[40%] flex flex-col items-center justify-center'>
 
                     <div className='w-full flex justify-between items-center'>
-                        <img className='h-20 mb-4' src={rideData.confirmRide.image} />
+                        <img className='h-20 mb-4' src={rideData?.confirmRide?.image} />
                         <div className='flex flex-col'>
-                            <p className='text-xl text-right'>{rideData.showDriverInfo.captain.firstName} {rideData.showDriverInfo.captain.lastName}</p>
-                            <p className='text-2xl text-right'>{rideData.showDriverInfo.captain.vehicle.plate}</p>
+                            <p className='text-xl text-right'>{rideData?.showDriverInfo?.captain?.firstName} {rideData?.showDriverInfo?.captain?.lastName}</p>
+                            <p className='text-2xl text-right'>{rideData?.showDriverInfo?.captain?.vehicle.plate}</p>
                         </div>
                     </div>
-                    <p className='pb-3 text-xl'><b>Destination: </b>{rideData.showDriverInfo.pickUpLocation}</p>
-                    <p className='pb-3 text-xl'><b>Price: </b>{rideData.showDriverInfo.dropLocation}</p>
+                    <p className='pb-3 text-xl'><b>Destination: </b>{rideData?.showDriverInfo?.pickUpLocation}</p>
+                    <p className='pb-3 text-xl'><b>Price: </b>{rideData?.showDriverInfo?.dropLocation}</p>
                     <button
                         // onClick={() => navigate("/userRiding")}
                         className='bg-green-700 px-10 py-3 rounded-2xl text-white font-bold cursor-pointer hover:bg-green-600'>
