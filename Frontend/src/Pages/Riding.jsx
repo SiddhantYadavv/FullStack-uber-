@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import DriverInfo from '../components/DriverInfo'
 import { SocketContext } from '../context/SocketContext'
 import { useContext } from 'react'
+import MapComponent from '../components/CaptainComponents/MapComponent'
 
 const Riding = () => {
 
@@ -25,7 +26,10 @@ const Riding = () => {
                 <i className="ri-home-2-line text-3xl font-bold"></i>
             </div>
             <div>
-                <img className='h-[70vh] w-full object-cover' src='https://camo.githubusercontent.com/e0debd25d05c84be78d89bf7a2858c65e3cfecd72e95bd22ec50e85fa1f84cfb/68747470733a2f2f322e62702e626c6f6773706f742e636f6d2f2d574f70483738393364526b2f5733527372626f476678492f41414141414141414356552f767a6b39683975526262415777485633366a5455644b4f555552795946322d6167434c63424741732f73313630302f73637265656e73686f74362e706e67' />
+                <div className='h-[70vh] w-full object-cover' >
+                <MapComponent/>
+                </div>
+                {/* <img className='h-[70vh] w-full object-cover' src='https://camo.githubusercontent.com/e0debd25d05c84be78d89bf7a2858c65e3cfecd72e95bd22ec50e85fa1f84cfb/68747470733a2f2f322e62702e626c6f6773706f742e636f6d2f2d574f70483738393364526b2f5733527372626f476678492f41414141414141414356552f767a6b39683975526262415777485633366a5455644b4f555552795946322d6167434c63424741732f73313630302f73637265656e73686f74362e706e67' /> */}
             </div>
 
             <div
